@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <title>Schema</title>
+    <meta charset="UTF-8">
+    <meta name="theme-color" content="#FFFFFF"/>
+    <meta name="description" content="Skolschema">
+    <link rel="manifest" href="manifest.json">
+
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Schema">
+    <meta name="apple-mobile-web-app-title" content="Schema">
+    <meta name="theme-color" content="#FFFFFF">
+    <meta name="msapplication-navbutton-color" content="#FFFFFF">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="msapplication-starturl" content="/">
+    
+    <link rel="icon" type="image/png" sizes="192x192" href="/192x192.png">
+    <link rel="apple-touch-icon" type="image/png" sizes="192x192" href="/192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/512x512.png">
+    <link rel="apple-touch-icon" type="image/png" sizes="512x512" href="/512x512.png">
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        filter: invert(0%);
+        overflow: hidden;
+        background-color: #C0C0C0;
+      }
+      #box {
+        position: absolute;
+        top: 80%;
+        left: 30%;
+        width: 40%;
+        height: 6%;
+        opacity: 0.3;
+        transition: all 0.5s;
+      }
+      #box:hover {
+        opacity: 1;
+        transition: all 0.5s;
+      }
+      #inputbox {
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        font-size: 6vh;
+        border-radius: 25px;
+        border: none;
+        outline: none;
+        background-color: rgba(255,255,255,0.8)
+      }
+      #btnleft {
+        position: absolute;
+        width: 10vh;
+        height: 10vh;
+        border-radius: 0px 10vw 0px 0px;
+        border: none;
+        outline: none;
+        opacity: 0.6;
+        bottom: 0;
+        left: 0;
+        background-color: rgba(255,255,255,0.8)
+      }
+      #btnright {
+        position: absolute;
+        width: 10vh;
+        height: 10vh;
+        border-radius: 10vw 0px 0px 0px;
+        border: none;
+        outline: none;
+        opacity: 0.6;
+        bottom: 0;
+        right: 0;
+        background-color: rgba(255,255,255,0.8)
+      }
+    </style>
+  </head>
+  <body id="body">
+    <noscript>enable javascript you actual autist</noscript>
+    <div id="box">
+      <input type="text" placeholder="id" id="inputbox" onchange="replace()">
+    </div>
+          <input type="button" id="btnleft" onclick="back()">
+      <input type="button" id="btnright" onclick="forward()">
+    <script>
+    var classid = "{3E748092-C63E-4BB3-BCBD-33B1FF8A90D5}"
+    Date.prototype.getWeek = function() {
+        var onejan = new Date(this.getFullYear(), 0, 1);
+        return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+    }
+
+    var weekNumber = (new Date()).getWeek();
+
+    var dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var now = new Date();
+      
+    var image = document.createElement("img");
+    var imageParent = document.getElementById("body");
+    curweek = (new Date()).getWeek();
+    image.id = "id";
+    image.className = "class";
+    image.alt = "schema";
+    image.src = "https://images.weserv.nl/?url=" + encodeURIComponent("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=png&schoolid=L001808/sv-se&type=-1&id="+classid+"&period=&week="+curweek+"&mode=0&head=0&clock=0&foot=0&day=0&width="+document.body.clientWidth+"&height="+document.documentElement.clientHeight);
+    document.getElementById("body").appendChild(image);
+    function replace() {
+      if (document.getElementById('inputbox').value) {
+        classid = document.getElementById('inputbox').value;
+      }
+    image.src = "https://images.weserv.nl/?url=" + encodeURIComponent("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=png&schoolid=L001808/sv-se&type=-1&id="+classid+"&period=&week="+curweek+"&mode=0&head=0&clock=0&foot=0&day=0&width="+document.body.clientWidth+"&height="+document.documentElement.clientHeight);
+    document.getElementById("body").replaceChild(image, document.getElementById("body").childNodes[0]);
+      document.getElementById('inputbox').value = "";
+    }
+    window.addEventListener('resize', () => {replace();});
+    function back() {
+      --curweek;
+      document.getElementById('inputbox').placeholder = curweek;
+      document.getElementById('inputbox').value = "";
+      replace();
+    }
+      function forward() {
+      ++curweek;
+        document.getElementById('inputbox').placeholder = curweek;
+        document.getElementById('inputbox').value = "";
+      replace();
+      }
+      async function registerSW() {
+        if ('serviceWorker' in navigator) {
+          try {
+            await navigator.serviceWorker.register('./sw.js');
+          } catch (e) {
+            console.log("haha it failed");
+          }
+        } 
+      }
+      registerSW();
+    </script>
+  </body>
+</html>
